@@ -2,7 +2,10 @@ paho-mqtt
 mysql-connector-python
 python-dotenv
 streamlit
+streamlit-autorefresh
 pandas
 tabulate
 sqlalchemy
 psycopg2-binary
+
+
