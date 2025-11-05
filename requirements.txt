@@ -1,0 +1,6 @@
+paho-mqtt
+mysql-connector-python
+python-dotenv
+streamlit
+pandas
+tabulate
