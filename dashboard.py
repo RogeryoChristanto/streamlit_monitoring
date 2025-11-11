@@ -29,10 +29,13 @@ img_base64 = get_base64_image("ppns_logo.png")
 user = os.getenv("MYSQL_USER")
 password = os.getenv("MYSQL_PASS")
 host = os.getenv("MYSQL_HOST")
+port = os.getenv("MYSQL_PORT")      # <-- [1] TAMBAHKAN BARIS INI
 db_name = os.getenv("MYSQL_DB")
-db_uri = f"mysql+mysqlconnector://{user}:{password}@{host}/{db_name}"
-engine = create_engine(db_uri)
 
+# --- [2] UBAH BARIS db_uri MENJADI SEPERTI INI ---
+db_uri = f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{db_name}"
+
+engine = create_engine(db_uri)
 # --- Session State ---
 if "paused" not in st.session_state:
     st.session_state.paused = False
@@ -296,7 +299,7 @@ try:
             if val > 1010: return "background:linear-gradient(145deg,#f39c12,#e67e22)"
             elif val < 990: return "background:linear-gradient(145deg,#8e44ad,#6c3483)"
             else: return "background:linear-gradient(145deg,#27ae60,#1e8449)"
-        def get_color_kelembapan(val):
+        def get_color_kelembaban(val):
             if val > 80: return "background:linear-gradient(145deg,#3498db,#1f618d)"
             elif val < 40: return "background:linear-gradient(145deg,#f39c12,#d35400)"
             else: return "background:linear-gradient(145deg,#27ae60,#1e8449)"
@@ -308,13 +311,13 @@ try:
         with m2:
             st.markdown(f"<div class='metric-card' style='{get_color_tekanan(latest['tekanan'])}'><h4>🌫️ Tekanan (hPa)</h4><h2>{latest['tekanan']:.2f}</h2></div>", unsafe_allow_html=True)
         with m3:
-            st.markdown(f"<div class='metric-card' style='{get_color_kelembapan(latest['kelembapan'])}'><h4>💧 Kelembapan (%)</h4><h2>{latest['kelembapan']:.2f}</h2></div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='metric-card' style='{get_color_kelembaban(latest['kelembaban'])}'><h4>💧 Kelembaban (%)</h4><h2>{latest['kelembaban']:.2f}</h2></div>", unsafe_allow_html=True)
 
         st.divider()
         st.subheader("📈 Grafik Sensor (30 Data Terakhir)")
         
         # Membuat chart lebih rapi dengan memilih kolom
-        chart_data = df.set_index("waktu")[["suhu", "tekanan", "kelembapan"]]
+        chart_data = df.set_index("waktu")[["suhu", "tekanan", "kelembaban"]]
         st.line_chart(chart_data)
 
         st.divider()
